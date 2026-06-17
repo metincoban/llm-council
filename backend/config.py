@@ -25,6 +25,7 @@ COUNCIL_MODELS = [
     "google/gemini-2.5-pro",
     "google/gemini-2.5-flash",
     "deepseek/deepseek-chat",
+    "nex-agi/nex-n2-pro:free",
 ]
 
 # Chairman model
