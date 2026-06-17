@@ -17,21 +17,18 @@ PROVIDERS = {
     "google/":   (GOOGLE_API_KEY,     "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", False),
 }
 
-# Council members — 6 models across 3 providers
+# Council members — 6 models across 4 providers
 COUNCIL_MODELS = [
-    # OpenAI (direct API)
     "openai/gpt-5.1",
     "openai/gpt-4o",
-    # Anthropic (via OpenRouter)
     "anthropic/claude-sonnet-4.5",
-    "anthropic/claude-opus-4-8",
-    # Google (via OpenRouter for Gemini — direct key available as fallback)
     "google/gemini-2.5-pro",
     "google/gemini-2.5-flash",
+    "deepseek/deepseek-chat",
 ]
 
 # Chairman model
-CHAIRMAN_MODEL = "anthropic/claude-opus-4-8"
+CHAIRMAN_MODEL = "anthropic/claude-sonnet-4.5"
 
 # Data directory
 DATA_DIR = "data/conversations"
