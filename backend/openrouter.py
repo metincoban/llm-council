@@ -1,8 +1,10 @@
-"""OpenRouter API client for making LLM requests."""
+"""Multi-Provider API client — uses OpenRouter as unified gateway for all models."""
 
 import httpx
 from typing import List, Dict, Any, Optional
-from .config import OPENROUTER_API_KEY, OPENROUTER_API_URL
+from .config import OPENROUTER_API_KEY
+
+OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 
 
 async def query_model(
@@ -11,10 +13,10 @@ async def query_model(
     timeout: float = 120.0
 ) -> Optional[Dict[str, Any]]:
     """
-    Query a single model via OpenRouter API.
+    Query a single model via OpenRouter (unified gateway for OpenAI, Anthropic, Google, etc.)
 
     Args:
-        model: OpenRouter model identifier (e.g., "openai/gpt-4o")
+        model: Model identifier (e.g., "openai/gpt-4o", "anthropic/claude-opus-4-8")
         messages: List of message dicts with 'role' and 'content'
         timeout: Request timeout in seconds
 
@@ -33,11 +35,7 @@ async def query_model(
 
     try:
         async with httpx.AsyncClient(timeout=timeout) as client:
-            response = await client.post(
-                OPENROUTER_API_URL,
-                headers=headers,
-                json=payload
-            )
+            response = await client.post(OPENROUTER_URL, headers=headers, json=payload)
             response.raise_for_status()
 
             data = response.json()
