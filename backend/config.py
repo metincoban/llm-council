@@ -3,21 +3,29 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(override=True)
 
 # ═══ API KEYS & ENDPOINTS ═══
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
 
 # Provider routing: model prefix → (api_key, api_url, use_key_as_query)
+# Only include providers with VERIFIED working direct API keys.
+# Models with no matching provider fall through to OpenRouter automatically.
 PROVIDERS = {
-    "openai/":   (OPENAI_API_KEY,     "https://api.openai.com/v1/chat/completions",           False),
-    "openrouter/":(OPENROUTER_API_KEY, "https://openrouter.ai/api/v1/chat/completions",       False),
-    "google/":   (GOOGLE_API_KEY,     "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", False),
+    # "openai/" disabled — key invalid, routed via OpenRouter
+    # "deepseek/" disabled — no direct key yet, routed via OpenRouter
+    # "google/" temporarily disabled — 429 rate limited on free tier
 }
 
-# Council members — 6 models across 4 providers
+# Council members — 7 models, routed direct or via OpenRouter
+#   openai/*      → direct OpenAI API
+#   google/*      → direct Google API
+#   deepseek/*    → OpenRouter (no direct key yet)
+#   anthropic/*   → OpenRouter
+#   nex-agi/*     → OpenRouter
 COUNCIL_MODELS = [
     "openai/gpt-5.1",
     "openai/gpt-4o",
